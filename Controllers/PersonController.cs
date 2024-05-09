@@ -16,7 +16,7 @@ namespace AspCore_Api_2.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPeople(string name = null, string gender = null, string birthPlace = null)
+        public IActionResult GetPerson(string name = null, string gender = null, string birthPlace = null)
         {
             var people = _personService.FilterPerson(name, gender, birthPlace);
             return Ok(people);
@@ -26,7 +26,7 @@ namespace AspCore_Api_2.Controllers
         public IActionResult AddPerson(Person person)
         {
             var newPerson = _personService.AddPerson(person);
-            return CreatedAtAction(nameof(GetPeople), new { id = newPerson.Id }, newPerson);
+            return CreatedAtAction(nameof(GetPerson), new { id = newPerson.Id }, newPerson);
         }
 
         [HttpPut("{id}")]
