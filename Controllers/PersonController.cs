@@ -4,7 +4,7 @@ using AspCore_Api_2.Services;
 
 namespace AspCore_Api_2.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("NashTech/Rookies")]
     [ApiController]
     public class PersonController : ControllerBase
     {
@@ -18,35 +18,64 @@ namespace AspCore_Api_2.Controllers
         [HttpGet]
         public IActionResult GetPerson(string name = null, string gender = null, string birthPlace = null)
         {
-            var people = _personService.FilterPerson(name, gender, birthPlace);
-            return Ok(people);
+            try
+            {
+                var people = _personService.FilterPerson(name, gender, birthPlace);
+                return Ok(people);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult AddPerson(Person person)
         {
-            var newPerson = _personService.AddPerson(person);
-            return CreatedAtAction(nameof(GetPerson), new { id = newPerson.Id }, newPerson);
+            try
+            {
+                var newPerson = _personService.AddPerson(person);
+                return CreatedAtAction(nameof(GetPerson), new { id = newPerson.Id }, newPerson);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
         public IActionResult UpdatePerson(Guid id, Person person)
         {
-            var updatedPerson = _personService.UpdatePerson(id, person);
-            if (updatedPerson == null)
-                return NotFound();
+            try
+            {
+                var updatedPerson = _personService.UpdatePerson(id, person);
+                if (updatedPerson == null)
+                    return NotFound();
 
-            return Ok(updatedPerson);
+                return Ok(updatedPerson);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletePerson(Guid id)
         {
-            var result = _personService.DeletePerson(id);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = _personService.DeletePerson(id);
+                if (!result)
+                    return NotFound();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+        
     }
 }
