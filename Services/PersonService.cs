@@ -1,4 +1,4 @@
-﻿using AspCore_Api_2.Models;
+using AspCore_Api_2.Models;
 namespace AspCore_Api_2.Services
 {
     public class PersonService : IPersonService
@@ -50,11 +50,27 @@ namespace AspCore_Api_2.Services
         }
         public List<Person> FilterPerson(string name, string gender, string birthPlace)
         {
-            return _person.Where(p =>
-                (string.IsNullOrEmpty(name) || (p.FullName).Contains(name, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(gender) || p.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(birthPlace) || p.BirthPlace.Equals(birthPlace, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+            var filteredPerson = _person.ToList();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                var nameFilter = filteredPerson.Where(p => (p.FullName).Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredPerson = filteredPerson.Intersect(nameFilter).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(gender))
+            {
+                var genderFilter = filteredPerson.Where(p => p.Gender.Equals(gender, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredPerson = filteredPerson.Intersect(genderFilter).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(birthPlace))
+            {
+                var birthPlaceFilter = filteredPerson.Where(p => p.BirthPlace.Equals(birthPlace, StringComparison.OrdinalIgnoreCase)).ToList();
+                filteredPerson = filteredPerson.Intersect(birthPlaceFilter).ToList();
+            }
+
+            return filteredPerson;
         }
     }
 }
