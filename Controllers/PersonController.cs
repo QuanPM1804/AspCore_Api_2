@@ -1,4 +1,4 @@
-﻿using AspCore_Api_2.Models;
+using AspCore_Api_2.Models;
 using Microsoft.AspNetCore.Mvc;
 using AspCore_Api_2.Services;
 
@@ -6,11 +6,11 @@ namespace AspCore_Api_2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PeopleController : ControllerBase
+    public class PersonController : ControllerBase
     {
         private readonly IPersonService _personService;
 
-        public PeopleController(IPersonService personService)
+        public PersonController(IPersonService personService)
         {
             _personService = personService;
         }
